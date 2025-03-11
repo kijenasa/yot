@@ -7,12 +7,18 @@ AUR helper
 ### Dependencies
 
 ```
-libgit2,
+libgit2
 ```
 
 ### Compiling
 
 ```
-make
-make install
+make clean install
+```
+
+## Usage
+```
+Usage: yot [options] <package_name>
+-S    Install packages
+-h    Display this help message
 ```
