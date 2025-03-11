@@ -19,18 +19,19 @@ const char *entry_path;
 
 // STRUCTS
 
-typedef struct package package;
+typedef struct package package_t;
 
 struct package {
    char *name;
-   package *dependencies; // TODO: this should probably be a graph
+   // package *dependencies; // TODO: this should probably be a graph
    int dependencies_count;
 };
 
 // PACKAGE MANAGMENT
 
-static int clone_repo(const char *git_url) {
+static int clone_repo(const char *git_url) { // TODO: make it create a new dir under CLONE_DIR
    git_repository *repo = NULL;
+   git_libgit2_init();
 
    int ret = git_clone(&repo, git_url, CLONE_DIR, NULL);
 
@@ -38,10 +39,14 @@ static int clone_repo(const char *git_url) {
    return ret;
 }
 
-static int build_package(const char *pkgbuild) { return -1; }
+static int build_package(const char *pkgbuild_dir) {
+   if(chdir(pkgbuild_dir))
+      return system("makepkg -si");
+   return -1;
+}
 
 // TODO: use cJSON and convert it to package struct
-static package *search_package(const char *package_name) { return NULL; }
+static package_t *get_package(const char *package_name) { return NULL; }
 
 static void clean_up() {
    remove(CLONE_DIR);
