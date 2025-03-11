@@ -50,21 +50,20 @@ static int build_package(const char *pkgbuild_dir) {
 }
 
 static int install_package(const char *package_name) {
+   int result = -1;
+
    char *package_url = get_package_url(package_name);
    char *package_dir = get_package_dir(package_name);
 
    printf("Cloning %s from %s\n", package_name, package_url);
    if(clone_repo(package_url, package_dir) == 0) {
       printf("Running 'makepkg -si'\n");
-
-      free(package_url);
-      free(package_dir);
-      return build_package(package_dir);
+      result = build_package(package_dir);
    }
 
    free(package_url);
    free(package_dir);
-   return -1;
+   return result;
 }
 
 int main(int argc, char *argv[]) {

@@ -9,6 +9,8 @@ LIBS = -lgit2
 LDFLAGS = ${LIBS}
 CFLAGS = -Wall -Wextra ${INCS}
 
+INSTALL_DIR = /usr/local/bin
+
 all: ${PROG}
 
 ${PROG}: ${OBJ}
@@ -16,6 +18,10 @@ ${PROG}: ${OBJ}
 
 %.o: %.c
 	${CC} -c $< ${CFLAGS}
+
+install: ${PROG}
+	sudo mkdir -p ${INSTALL_DIR}
+	sudo install -m 755 ${PROG} ${INSTALL_DIR}/
 
 clean:
 	-rm ${OBJ} ${PROG}
