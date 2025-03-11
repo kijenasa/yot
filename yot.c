@@ -66,6 +66,8 @@ static int install_package(const char *package_name) {
    return result;
 }
 
+/* ENTRY */
+
 int main(int argc, char *argv[]) {
    int opt;
    while((opt = getopt(argc, argv, "S:R:U:Q:h")) != -1) {
