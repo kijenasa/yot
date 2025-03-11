@@ -14,4 +14,5 @@ libgit2,
 
 ```
 make
+make install
 ```
