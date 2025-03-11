@@ -1,13 +1,20 @@
+#include <git2/global.h>
+#include <git2/types.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <git2.h>
+#include <git2/clone.h>
+
+#include "config.h"
+
+const char *entry_path;
 
 // MACROS
 
 #define USAGE                                                                                                          \
    "Usage: %s [options] <package_name>\n"                                                                              \
    "-S    Install packages\n"                                                                                          \
-   "-Q    Query packages\n"                                                                                            \
    "-h    Display this help message\n"
 
 // STRUCTS
@@ -16,17 +23,30 @@ typedef struct package package;
 
 struct package {
    char *name;
-   package *dependencies;
+   package *dependencies; // TODO: this should probably be a graph
    int dependencies_count;
 };
 
 // PACKAGE MANAGMENT
 
-static char *clone_repo(const char *git_url) { return NULL; }
+static int clone_repo(const char *git_url) {
+   git_repository *repo = NULL;
+
+   int ret = git_clone(&repo, git_url, CLONE_DIR, NULL);
+
+   git_libgit2_shutdown();
+   return ret;
+}
 
 static int build_package(const char *pkgbuild) { return -1; }
 
-static package *get_package(const char *package_name) { return NULL; }
+// TODO: use cJSON and convert it to package struct
+static package *search_package(const char *package_name) { return NULL; }
+
+static void clean_up() {
+   remove(CLONE_DIR);
+   chdir(entry_path);
+}
 
 // ENTRY
 
@@ -36,14 +56,13 @@ int main(int argc, char *argv[]) {
       switch(opt) {
       case 'S':
          // TODO
-         break;
+         clean_up();
+         exit(EXIT_SUCCESS);
       case 'R':
       case 'U':
-         fprintf(stderr, "You probably meant to use pacman\n");
-         break;
       case 'Q':
-         printf("%s", get_package(optarg)->name);
-         break;
+         fprintf(stderr, "You probably meant to use pacman\n");
+         exit(EXIT_FAILURE);
       case 'h':
          printf(USAGE, argv[0]);
          exit(EXIT_SUCCESS);

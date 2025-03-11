@@ -4,7 +4,7 @@ OBJ  = ${SRC:.c=.o}
 
 CC = cc
 INCS =
-LIBS =
+LIBS = -lgit2
 
 LDFLAGS = ${LIBS}
 CFLAGS = -Wall -Wextra ${INCS}
