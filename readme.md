@@ -8,7 +8,6 @@ AUR helper
 
 ```
 libgit2,
-cJSON
 ```
 
 ### Compiling
